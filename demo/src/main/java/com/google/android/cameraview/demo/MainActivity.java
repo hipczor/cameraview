@@ -17,9 +17,13 @@
 package com.google.android.cameraview.demo;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -38,11 +42,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Surface;
+import android.view.SurfaceView;
+import android.view.TextureView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
+import com.google.android.cameraview.PreviewImpl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -86,16 +95,22 @@ public class MainActivity extends AppCompatActivity implements
     private int mCurrentFlash;
 
     private CameraView mCameraView;
+    private ImageView mPreview;
 
     private Handler mBackgroundHandler;
 
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
+        @TargetApi(14)
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.take_picture:
                     if (mCameraView != null) {
-                        mCameraView.takePicture();
+//                        mCameraView.takePicture();
+                        mPreview.setImageBitmap(mCameraView.takeScreenShot());
+                        mCameraView.setVisibility(View.GONE);
+
                     }
                     break;
             }
@@ -107,6 +122,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mCameraView = (CameraView) findViewById(R.id.camera);
+        mPreview = (ImageView) findViewById(R.id.preview);
         if (mCameraView != null) {
             mCameraView.addCallback(mCallback);
         }

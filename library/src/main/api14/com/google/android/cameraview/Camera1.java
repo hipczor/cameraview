@@ -257,6 +257,11 @@ class Camera1 extends CameraViewImpl {
         }
     }
 
+    @Override
+    PreviewImpl getPreview() {
+        return mPreview;
+    }
+
     /**
      * This rewrites {@link #mCameraId} and {@link #mCameraInfo}.
      */

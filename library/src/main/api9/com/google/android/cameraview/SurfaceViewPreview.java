@@ -17,6 +17,8 @@
 package com.google.android.cameraview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.support.v4.view.ViewCompat;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -55,7 +57,7 @@ class SurfaceViewPreview extends PreviewImpl {
     }
 
     @Override
-    Surface getSurface() {
+    public Surface getSurface() {
         return getSurfaceHolder().getSurface();
     }
 
@@ -65,7 +67,7 @@ class SurfaceViewPreview extends PreviewImpl {
     }
 
     @Override
-    View getView() {
+    public View getView() {
         return mSurfaceView;
     }
 
@@ -81,6 +83,16 @@ class SurfaceViewPreview extends PreviewImpl {
     @Override
     boolean isReady() {
         return getWidth() != 0 && getHeight() != 0;
+    }
+
+    @Override
+    Bitmap takeScreenShot() {
+        final Bitmap bitmap = Bitmap.createBitmap(mSurfaceView.getWidth(),
+                mSurfaceView.getHeight(),
+                Bitmap.Config.RGB_565);
+        final Canvas c = new Canvas(bitmap);
+        mSurfaceView.draw(c);
+        return bitmap;
     }
 
 }

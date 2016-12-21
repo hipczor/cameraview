@@ -16,6 +16,7 @@
 
 package com.google.android.cameraview;
 
+import android.graphics.Bitmap;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -24,7 +25,7 @@ import android.view.View;
 /**
  * Encapsulates all the operations related to camera preview in a backward-compatible manner.
  */
-abstract class PreviewImpl {
+public abstract class PreviewImpl {
 
     interface Callback {
         void onSurfaceChanged();
@@ -49,6 +50,8 @@ abstract class PreviewImpl {
     abstract void setDisplayOrientation(int displayOrientation);
 
     abstract boolean isReady();
+
+    abstract Bitmap takeScreenShot();
 
     protected void dispatchSurfaceChanged() {
         mCallback.onSurfaceChanged();
